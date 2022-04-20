@@ -5,9 +5,8 @@ import ExpenseList from "./Components/ExpenseList.js";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 
-const intialExpense = localStorage.getItem("expenses")
-  ? JSON.parse(localStorage.getItem("expenses"))
-  : [];
+const intialExpense = localStorage.getItem('expenses') ? 
+JSON.parse(localStorage.getItem('expenses')) : [];
 
 function App() {
   // ********** All Expenses and edit Expenses ***********
@@ -29,9 +28,9 @@ function App() {
   // ********** Local storage saving ***********
 
   useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]);
-
+    localStorage.setItem("expenses" ,JSON.stringify(expenses));
+  }, [expenses])
+  
   // *******  Fountionalities   *********
 
   const handleCharge = (e) => {
@@ -51,18 +50,18 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (charge !== "" && amount > 0) {
-      if (isNaN(amount)) {
-        handleAlert({ type: "danger", text: "Amount should be a Number" });
-        setAmount("");
-      } else {
+    if (isNaN(amount)) {
+      handleAlert({ type: "danger", text: "Amount should be a Number" });
+      setAmount("");
+    } else {
+      if (charge !== "" && amount > 0) {
         if (edit) {
-          let temExpense = expenses.map((item) => {
-            return item.id === id ? { ...item, charge, amount } : item;
+          let temExpense = expenses.map(item => {
+            return item.id === id ? {...item, charge, amount} : item;
           });
           setExpenses(temExpense);
           setEdit(false);
-          handleAlert({ type: "success", text: "Item Edited" });
+          handleAlert({ type : "success", text : "Item Edited"})
         } else {
           const singleExpense = { id: uuidv4(), charge, amount };
           setExpenses([...expenses, singleExpense]);
@@ -70,12 +69,12 @@ function App() {
         }
         setCharge("");
         setAmount("");
+      } else {
+        handleAlert({
+          type: "danger",
+          text: "Empty value of both charge and expense not be proceded",
+        });
       }
-    } else {
-      handleAlert({
-        type: "danger",
-        text: "Empty value of both charge and expense not be proceded",
-      });
     }
   };
 
@@ -89,7 +88,7 @@ function App() {
   const handleDelete = (id) => {
     let temExpense = expenses.filter((item) => item.id !== id);
     setExpenses(temExpense);
-    handleAlert({ type: "danger", text: "Items Deleted" });
+    handleAlert({ type: "danger", text: "Item Deleted" });
     setEdit(false);
   };
 
